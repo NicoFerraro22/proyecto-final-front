@@ -1,24 +1,56 @@
+
 const API_URL = import.meta.env.VITE_API_URL
 const USE_MOCK = !API_URL || import.meta.env.VITE_USE_MOCK === 'true'
 
+// =======================
+// HTTP helpers
+// =======================
 async function http(url, opts = {}) {
   const res = await fetch(url, {
-    headers: { 'Content-Type': 'application/json', ...(opts.headers || {}) },
+    headers: {
+      'Content-Type': 'application/json',
+      ...(opts.headers || {}),
+    },
     ...opts,
   })
-  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+
+  if (!res.ok) {
+    const err = new Error(`HTTP ${res.status}`)
+    err.status = res.status
+    try {
+      err.data = await res.json()
+    } catch {
+      err.data = null
+    }
+    throw err
+  }
+
   return res.json()
 }
 
+// =======================
+// API pública (sin auth)
+// =======================
 export const api = {
-  listProducts: () => USE_MOCK ? http('/mock/products.json') : http(`${API_URL}/products/`),
-  getProduct: (id) => USE_MOCK
-    ? http('/mock/products.json').then(list => list.find(p => p.id === id))
-    : http(`${API_URL}/products/${id}/`),
-  listCategories: () => USE_MOCK ? http('/mock/categories.json') : http(`${API_URL}/categories/`),
+  listProducts: () =>
+    USE_MOCK
+      ? http('/mock/products.json')
+      : http(`${API_URL}/products/`),
+
+  getProduct: (id) =>
+    USE_MOCK
+      ? http('/mock/products.json').then(list => list.find(p => p.id === id))
+      : http(`${API_URL}/products/${id}/`),
+
+  listCategories: () =>
+    USE_MOCK
+      ? http('/mock/categories.json')
+      : http(`${API_URL}/categories/`), // si tu endpoint es /categorys/ ponelo acá
 }
 
-
+// =======================
+// Manejo de tokens
+// =======================
 const TOKEN_KEY = 'bmth_token'
 const REFRESH_KEY = 'bmth_refresh'
 
@@ -36,40 +68,76 @@ export function clearTokens() {
   localStorage.removeItem(REFRESH_KEY)
 }
 
+// =======================
+// Fetch autenticado
+// =======================
 async function authFetch(url, opts = {}) {
   const token = getAccessToken()
-  const headers = { 'Content-Type': 'application/json', ...(opts.headers || {}) }
+  const headers = {
+    'Content-Type': 'application/json',
+    ...(opts.headers || {}),
+  }
+
   if (token) headers['Authorization'] = `Bearer ${token}`
+
   const res = await fetch(url, { ...opts, headers })
+
+  // Intento de refresh si el access venció
   if (res.status === 401) {
-    // try refresh once
     const refresh = localStorage.getItem(REFRESH_KEY)
+
     if (refresh) {
       const r = await fetch(`${API_URL}/token/refresh/`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ refresh })
+        body: JSON.stringify({ refresh }),
       })
+
       if (r.ok) {
         const data = await r.json()
         if (data.access) {
           setTokens({ access: data.access })
+          // reintento una sola vez con el nuevo access
           return authFetch(url, opts)
         }
       }
+
+      // si falla el refresh, limpiamos todo
       clearTokens()
     }
   }
-  if (!res.ok) throw new Error(`HTTP ${res.status}`)
+
+  if (!res.ok) {
+    const err = new Error(`HTTP ${res.status}`)
+    err.status = res.status
+    try {
+      err.data = await res.json()
+    } catch {
+      err.data = null
+    }
+    throw err
+  }
+
   return res.json()
 }
 
-
+// =======================
+// Auth endpoints
+// =======================
 export const auth = {
-  login: (username, password) => http(`${API_URL}/token/`, { method: 'POST', body: JSON.stringify({ username, password }) }),
-  me: () => authFetch(`${API_URL}/me/`),
-};
+  login: (username, password) =>
+    http(`${API_URL}/token/`, {
+      method: 'POST',
+      body: JSON.stringify({ username, password }),
+    }),
 
+  me: () => authFetch(`${API_URL}/me/`),
+}
+
+// =======================
+// API protegida (con token)
+// =======================
 export const apiProtected = {
   me: () => authFetch(`${API_URL}/me/`),
 }
+
