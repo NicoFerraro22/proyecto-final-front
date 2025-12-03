@@ -1,0 +1,31 @@
+[
+  {
+    "id": "v1",
+    "name": "Vinilo \u2014 POST HUMAN: NeX GEn",
+    "price": 54999,
+    "desc": "Edici\u00f3n en vinilo del \u00e1lbum POST HUMAN: NeX GEn.",
+    "category": {
+      "id": 1,
+      "name": "Vinilos",
+      "slug": "vinilos"
+    },
+    "image_url": "/mock/img/vinil_nextgen_bmth.webp",
+    "tracks": [
+      "DEATH (...)",
+      "YOUtopia",
+      "Kool-Aid"
+    ]
+  },
+  {
+    "id": "c1",
+    "name": "CD \u2014 amo",
+    "price": 22999,
+    "desc": "CD del \u00e1lbum amo.",
+    "category": {
+      "id": 2,
+      "name": "CDs",
+      "slug": "cds"
+    },
+    "image_url": "/mock/img/cd_amo_bmth.webp"
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Vinilos",
+    "slug": "vinilos"
+  },
+  {
+    "id": 2,
+    "name": "CDs",
+    "slug": "cds"
+  },
+  {
+    "id": 3,
+    "name": "Ropa",
+    "slug": "ropa"
+  },
+  {
+    "id": 4,
+    "name": "Accesorios",
+    "slug": "accesorios"
+  }
+]
