@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom'
 export default function Cart({ cart, add, removeOne, removeAll, clear }) {
   const { user, loading } = useAuth()
   if (!loading && !user) return <Navigate to="/login" replace />
-  const items = Object.values(cart) // [{ product, qty }]
+  const items = Object.values(cart) 
   const total = items.reduce((acc, it) => acc + it.product.price * it.qty, 0)
 
   return (

@@ -29,7 +29,7 @@ export default function Home() {
             Explora nuestra colección y encontrá el artículo perfecto para mostrar tu amor por BMTH.
           </p>
 
-          {/* 🔥 NUEVO TEXTO INFORMATIVO */}
+          {/* TEXTO INFORMATIVO */}
           <p className="text-gray-700 leading-relaxed mt-6 max-w-3xl">
             <strong>Bring Me The Horizon (BMTH)</strong> es una banda británica formada en Sheffield en 2004.
             A lo largo de su carrera, el grupo evolucionó desde sonidos cercanos al metalcore hacia
@@ -45,7 +45,7 @@ export default function Home() {
             En esta tienda encontrarás productos inspirados en el universo de la banda:
             indumentaria, accesorios, música y más, pensados especialmente para seguidores de BMTH.
           </p>
-          {/* 🔥 FIN DEL TEXTO AGREGADO */}
+      
 
           <div className="mt-6">
             <Link

@@ -45,7 +45,7 @@ export const api = {
   listCategories: () =>
     USE_MOCK
       ? http('/mock/categories.json')
-      : http(`${API_URL}/categories/`), // si tu endpoint es /categorys/ ponelo acá
+      : http(`${API_URL}/categories/`),
 }
 
 // =======================
@@ -82,7 +82,6 @@ async function authFetch(url, opts = {}) {
 
   const res = await fetch(url, { ...opts, headers })
 
-  // Intento de refresh si el access venció
   if (res.status === 401) {
     const refresh = localStorage.getItem(REFRESH_KEY)
 
@@ -97,12 +96,12 @@ async function authFetch(url, opts = {}) {
         const data = await r.json()
         if (data.access) {
           setTokens({ access: data.access })
-          // reintento una sola vez con el nuevo access
+          
           return authFetch(url, opts)
         }
       }
 
-      // si falla el refresh, limpiamos todo
+      
       clearTokens()
     }
   }

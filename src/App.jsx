@@ -10,7 +10,7 @@ import ProductDetail from './pages/ProductDetail.jsx'
 import Cart from './pages/Cart.jsx'
 import NotFound from './pages/NotFound.jsx'
 
-/** Estructura del carrito: { [id]: { product, qty } } */
+
 export default function App() {
   const [cart, setCart] = useState({})
 
