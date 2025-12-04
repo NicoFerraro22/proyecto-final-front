@@ -1,4 +1,4 @@
-// src/contexts/AuthContext.jsx
+
 import { createContext, useContext, useEffect, useState } from 'react'
 import {
   auth,
@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  // Cargar usuario si ya hay token guardado (ej: si recargás la página)
+  // Cargar usuario si ya hay token guardado 
   useEffect(() => {
     async function loadUser() {
       try {
@@ -24,7 +24,7 @@ export function AuthProvider({ children }) {
           return
         }
 
-        // Intentamos pegarle a /me/, pero si falla limpiamos
+        
         const me = await apiProtected.me()
         setUser(me)
       } catch (err) {
@@ -41,17 +41,17 @@ export function AuthProvider({ children }) {
 
   // LOGIN
   async function login(username, password) {
-    // 1) Pedimos los tokens
+    
     const tokens = await auth.login(username, password)
     setTokens(tokens)
 
-    // 2) Intentamos traer /me/, pero NO rompemos el login si falla
+    
     try {
       const me = await apiProtected.me()
       setUser(me)
     } catch (err) {
       console.warn('No se pudo obtener /me/, pero login fue correcto:', err)
-      // fallback: al menos guardamos el username en el estado
+      
       setUser({ username })
     }
 
