@@ -44,6 +44,10 @@ export default function Home() {
             <br /><br />
             En esta tienda encontrarás productos inspirados en el universo de la banda:
             indumentaria, accesorios, música y más, pensados especialmente para seguidores de BMTH.
+            Cada artículo refleja la esencia y el espíritu innovador que caracteriza a Bring Me The Horizon.
+            <br /><br />
+            ¡Explorá nuestra tienda y llevate un pedazo del mundo de BMTH contigo!
+
           </p>
       
 
