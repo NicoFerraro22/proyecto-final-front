@@ -23,7 +23,7 @@ export default function Login() {
 
     try {
       await login(username, password)
-      nav('/cart')
+      nav('/')
     } catch (err) {
       setError('Credenciales inválidas')
     } finally {
